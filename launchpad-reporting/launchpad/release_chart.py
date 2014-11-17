@@ -1,6 +1,6 @@
 import datetime
 import pytz
-from launchpad.lpdata import LaunchpadData
+from lpdata import LaunchpadData
 from collections import OrderedDict
 from collections import defaultdict
 from bisect import bisect_left

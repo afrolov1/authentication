@@ -1,8 +1,13 @@
+import sys
 import flask
+from launchpadlib.launchpad import Launchpad
+from launchpadlib.uris import LPNET_SERVICE_ROOT
+from launchpadlib.credentials import Credentials
+from lazr.restfulclient.errors import HTTPError
 import os
 import pymongo
 from launchpad.release_chart import ReleaseChart
-from launchpad.lpdata import LaunchpadData
+from launchpad.lpdata import LaunchpadData, launchpadlib
 import json
 import time
 
@@ -33,6 +38,28 @@ for s in subprs:
 all_tags = all_tags[:-1]
 
 flag = False
+
+
+@app.route('/login')
+def login():
+    credentials = Credentials("launchpad-reporting-www")
+    request_token_info = credentials.get_request_token(web_root="production")
+    print request_token_info
+    complete = False
+    while not complete:
+        try:
+            credentials.exchange_request_token_for_access_token(
+                web_root="production")
+            complete = True
+        except HTTPError:
+            pass
+
+    launchpad = Launchpad(credentials, service_root="production", version="0.2")
+
+    #
+    #
+
+    return ....
 
 
 @app.route('/project/<project_name>/bug_table_for_status/<bug_type>/'
